@@ -1,13 +1,15 @@
 public class Pancake {
     public int size;
-    // todo: add attr for burnt side
+    public boolean burntSide;
 
-    public Pancake(int size) {
+    public Pancake(int size, int burntSide) {
         this.size = size;
+        this.burntSide = (burntSide == 1);
     }
     
     @Override
     public String toString() {
-        return Integer.toString(this.size);
+        return Integer.toString(this.size) +
+               (this.burntSide ? " (burnt) " : " ");
     }
 }
