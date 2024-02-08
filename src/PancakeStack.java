@@ -9,21 +9,16 @@ import java.util.Scanner;
 public class PancakeStack {
     Pancake[] stack;
     int size;
-    int min;
-    int max;
+    int max = 0;
 
     public PancakeStack(int[] sizes) {
         this.size = sizes.length;
         stack = new Pancake[size];
 
-        // set min and max
-        min = max = 0;
-
+        // set max
         for (int i=0; i<size; i++) {
             stack[i] = new Pancake(sizes[i]);
-            if (stack[i].size < stack[min].size) {
-                min = i;
-            } else if (stack[i].size > stack[max].size) {
+            if (stack[i].size > stack[max].size) {
                 max = i;
             }
         }
@@ -37,73 +32,35 @@ public class PancakeStack {
         }
         System.arraycopy(temp, 0, stack, 0, length);
 
-        // update min and max if flipped
-        this.min = (this.min < length) ? length - this.min - 1 : this.min;
-        this.max = (this.max < length) ? length - this.max - 1 : this.max;
-
         // print stack after flipping
         System.out.println(this.toString());
     }
 
-    public int findNext(int curr) {
-        // find next smallest element
-        int next = this.max;
-        for (int i=0; i<this.size; i++) {
-            next = ((this.stack[i].size > this.stack[curr].size)
-                    && (this.stack[i].size < this.stack[next].size))
-                    ? i : next;
+    public int findNext(int round) {
+        // find next biggest pancake
+        if (round == this.size-1) {
+            return this.max;
+        } else {
+            int next = 0;
+            for (int i=0; i<round+1; i++) {
+                next = (this.stack[i].size > this.stack[next].size)
+                        ? i : next;
+            }
+            return next;
         }
-        return next;
     }
 
     public void sortStack() {
-        // bring next pancake in order to top
-        int curr = this.min;
-        int next = findNext(curr);
-        boolean sorted = false;
+        // bring current largest pancake to bottom
+        int curr;
 
-        while (!sorted) {
-            if (next != curr + 1) {
-                // pair is separated OR curr is largest pancake
-                if (curr == next) {
-                    // curr is largest pancake (end of stack)
-                    // stack sorted
-                    sorted = true;
-                } else {
-                    // pair not in order found
-                    // bring smaller pancake to top
-                    flipStack(curr+1);
-                    // flip smaller to be above bigger
-                    next = (next < curr) ? curr - next : next;
-                    flipStack(next);
-
-                    // continue with next pair
-                    curr = next;
-                    next = findNext(curr);
-                }
-
-            } else if (next == this.max) {
-                // reached largest pancake
-                if (next == this.size-1) {
-                    // if largest pancake is at bottom,
-                    // stack is sorted
-                    sorted = true;
-                } else {
-                    if (next != 0) {
-                        // smaller pancake at top
-                        // bring largest to top
-                        flipStack(next+1);
-                    }
-
-                    flipStack(this.size);
-                    // reset values
-                    curr = this.min;
-                    next = findNext(curr);
-                }
-            } else {
-                // find next smallest separated pair
-                curr = next;
-                next = findNext(curr);
+        for (int round = this.size-1; round > 0; round--) {
+            curr = this.findNext(round);
+            // if max is not at bottom
+            if (curr != round) { 
+                // bring max to top, then to bottom
+                this.flipStack(curr+1);
+                this.flipStack(round+1);
             }
         }
     }

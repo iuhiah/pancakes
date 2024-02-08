@@ -11,8 +11,10 @@ _Note: This folder is set up as an IntelliJ project. The input has been redirect
 Input file contains a line of integers where:
 - The first integer `n` is the number of pancakes.
 - The next `n` integers are the sizes of the pancakes.
+All inputs are assumed to be valid (positive and distinct).
 
 ## Solution:
-Sort the two smallest unsorted pancakes at a time. Bring the smaller pancake to the top of the stack, then flip it to be above the next smallest pancake. Repeat until the largest pancake is at the bottom of the stack, at which point the stack is sorted.
+(Where `n` is the number of pancakes and `i = n - round`)
+Bring the `i`th smallest (biggest unsorted) pancake to the top, then flip it above the `i+1`th smallest pancake. Repeat this process for `n` pancakes.
 
-Loop invariant: The `i` smallest pancakes are always sorted.
+Loop invariant: Bottom `i` pancakes are always sorted.
