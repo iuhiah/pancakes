@@ -30,7 +30,7 @@ public class PancakeStack {
     }
 
     public void flipStack(int length) {
-        // flip stack from start to end (inclusive)
+        // flip length number of pancakes
         Pancake[] temp = new Pancake[length];
         for (int i=0; i<length; i++) {
             temp[i] = stack[length-i-1];
@@ -64,31 +64,29 @@ public class PancakeStack {
 
         while (!sorted) {
             if (next != curr + 1) {
+                // pair is separated OR curr is largest pancake
                 if (curr == next) {
-                    // end of stack reached
+                    // curr is largest pancake (end of stack)
                     // stack sorted
                     sorted = true;
                 } else {
                     // pair not in order found
-                    // bring smaller to top
+                    // bring smaller pancake to top
                     flipStack(curr+1);
                     // flip smaller to be above bigger
                     next = (next < curr) ? curr - next : next;
                     flipStack(next);
 
                     // continue with next pair
-                    // new curr is old next
                     curr = next;
                     next = findNext(curr);
                 }
 
             } else if (next == this.max) {
                 // reached largest pancake
-                // pair not separated
-
                 if (next == this.size-1) {
-                    // if largest pancake is at bottom
-                    // stack sorted
+                    // if largest pancake is at bottom,
+                    // stack is sorted
                     sorted = true;
                 } else {
                     if (next != 0) {
