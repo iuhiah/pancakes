@@ -1,6 +1,6 @@
 /*
- * Practice for pancake sorting question in
- * CS2040S AY22/23 S2 Recitation 2
+ * Practice for pancake flipping question in
+ * CS2040S Recitation 2 handout (AY 23/24 S2).
  * author: iuhiah
  */
 
